@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Falcon Supreme Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap">
+<link href ="https://fonts.googleapis.com/ccs2?family=Bodoni+Moda:wght@400;700display=swap" rel="stylesheet">
+<style>
+html, body { margin: 0; }
+/* Layout: three screens switched by the URL hash (#splash, #landing, #home). Splash is a centered wordmark with a loading line, landing is a left-aligned statement with one button, home is a scrolling ledger of the businesses. One look only: matte black ground, matte grey type, Bodoni Moda in capitals everywhere. */
+:root {
+  --bg: #0b0b0c;
+  --surface: #131314;
+  --fg: #a7aaad;
+  --fg-strong: #c3c6c9;
+  --muted: #797d81;
+  --line: #262729;
+  --gold: #b8923e;
+  --btn-bg: #a7aaad;
+  --btn-ink: #0b0b0c;
+  --display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --text: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+h1, h2, h3, h4, p, ul, dl, dd { margin: 0; padding: 0; }
+h1, h2, h3, h4 { color: var(--fg-strong); font-weight: 800; line-height: 0.98; letter-spacing: -0.01em; text-wrap: balance; }
+ul { list-style: none; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--fg-strong); outline-offset: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.label { font-size: 12px; font-weight: 600; letter-spacing: 0.22em; color: var(--muted); }
+
+.btn { display: inline-block; font-family: var(--display); font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; background: var(--btn-bg); color: var(--btn-ink); border: 1px solid var(--btn-bg); padding: 12px 26px; border-radius: 2px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.btn:hover { background: transparent; color: var(--btn-bg); }
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--muted); }
+.btn.ghost:hover { border-color: var(--fg-strong); color: var(--fg-strong); }
+
+.mark { width: 30px; height: 30px; color: var(--fg-strong); flex: none; }
+
+/* Screens */
+.screen { animation: enter 0.6s ease both; }
+@keyframes enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Splash */
+#splash { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; text-align: center; cursor: pointer; padding-block: 40px 80px; position: relative; }
+#splash .mark { width: 64px; height: 64px; }
+#splash h1 { font-size: clamp(2.6rem, 11vw, 7.5rem); font-weight: 900; letter-spacing: -0.03em; }
+#splash .sub { font-size: clamp(11px, 2.4vw, 14px); letter-spacing: 0.34em; color: var(--muted); }
+.loadbar { width: min(220px, 60vw); height: 2px; background: var(--line); overflow: hidden; }
+.loadbar i { display: block; height: 100%; width: 100%; background: var(--fg); transform-origin: left; animation: load 3.2s linear both; }
+@keyframes load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+#splash .skip { position: absolute; bottom: 36px; left: 0; right: 0; display: flex; justify-content: center; }
+#splash .skip a { padding: 8px 4px; border-bottom: 1px solid var(--line); }
+
+/* Landing */
+#landing { min-height: 100svh; display: flex; flex-direction: column; }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 24px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: 0.12em; font-size: 15px; color: var(--fg-strong); }
+.hero { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 32px; padding-block: clamp(40px, 8vw, 96px); }
+.hero h1 { font-size: clamp(2.8rem, 10.5vw, 8.4rem); font-weight: 900; letter-spacing: -0.035em; line-height: 0.92; max-width: 11ch; }
+.hero p { max-width: 44ch; font-size: 16px; letter-spacing: 0.1em; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); margin-bottom: 0; }
+.trio div { padding: 20px 16px 24px 0; border-right: 1px solid var(--line); min-width: 0; }
+.trio div + div { padding-left: 20px; }
+.trio div:last-child { border-right: 0; }
+.trio b { display: block; font-size: 1.15rem; font-weight: 800; color: var(--fg-strong); letter-spacing: 0.04em; }
+.trio span { font-size: 12px; letter-spacing: 0.18em; color: var(--muted); }
+
+/* Home */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px 28px; flex-wrap: wrap; padding-block: 14px; }
+.nav .brand { background: none; border: 0; padding: 0; font-family: var(--display); text-transform: uppercase; cursor: pointer; }
+.nav ul { display: flex; flex-wrap: wrap; gap: 4px 22px; align-items: center; }
+.nav button.link { background: none; border: 0; padding: 6px 0; font-family: var(--display); font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg); cursor: pointer; }
+.nav button.link:hover { color: var(--fg-strong); }
+.nav .btn { padding: 8px 18px; font-size: 12px; }
+
+#home section, #about section { padding-block: clamp(48px, 8vw, 96px); border-top: 1px solid var(--line); scroll-margin-top: 80px; }
+#home section:first-of-type, #about section:first-of-type { border-top: 0; }
+.head { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 12px 40px; margin-bottom: 44px; align-items: start; }
+.head .label { padding-top: 10px; }
+.head h2 { font-size: clamp(2rem, 6vw, 4rem); font-weight: 900; letter-spacing: -0.03em; }
+
+.rows li { display: grid; grid-template-columns: 200px minmax(0, 1fr) 150px; gap: 8px 40px; padding-block: 26px; border-top: 1px solid var(--line); align-items: start; }
+.rows li:last-child { border-bottom: 1px solid var(--line); }
+.rows h3 { font-size: 1.6rem; }
+.rows p { max-width: 58ch; font-size: 15.5px; letter-spacing: 0.08em; }
+.rows .spec { display: block; margin-top: 10px; font-size: 12px; letter-spacing: 0.18em; color: var(--muted); }
+.rows .status { justify-self: end; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; border: 1px solid var(--muted); color: var(--muted); padding: 5px 12px; border-radius: 999px; white-space: nowrap; }
+.rows .status.live { background: var(--fg); color: var(--btn-ink); border-color: var(--fg); }
+
+.series { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; }
+.series.has-open { grid-template-columns: 1fr; }
+.opt { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
+.opt.open { order: -1; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); }
+.series.has-open .opt:not(.open) .flip { max-width: 440px; }
+
+/* Flip card: .flip floats, .flip-inner turns, .face is the card itself (front and back) */
+.flip { perspective: 1400px; cursor: pointer; border-radius: 20px; transition: translate 0.3s ease; }
+.flip:hover { translate: 0 -4px; }
+.opt.open .flip { animation: floaty 4.5s ease-in-out infinite; }
+.flip-inner { display: grid; transform-style: preserve-3d; transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.opt.open .flip-inner { transform: rotateY(180deg); }
+.face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 1px solid var(--gold); border-radius: 20px; box-shadow: 0 0 24px rgba(184, 146, 62, 0.12); padding: 28px; display: flex; flex-direction: column; gap: 18px; min-width: 0; background: var(--surface); transition: box-shadow 0.6s; }
+.opt.open .face { box-shadow: 0 18px 44px rgba(184, 146, 62, 0.22); }
+.face.back { transform: rotateY(180deg); justify-content: space-between; gap: 28px; }
+/* Both cards share the height of the taller one. The script sets --card-h. */
+.face { min-height: var(--card-h, 0px); }
+.hint { margin-top: auto; padding-top: 8px; color: var(--gold); }
+.back-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--gold); }
+.back-top .tap { width: 28px; height: 28px; flex: none; }
+.buyer { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--gold); border-radius: 0; color: var(--fg-strong); font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 4.4vw, 2.3rem); letter-spacing: -0.01em; text-transform: uppercase; padding: 6px 0 10px; min-width: 0; }
+.buyer:focus-visible { outline: none; border-bottom-color: var(--fg-strong); }
+
+/* Back of the card: its own design. Essential is polished gold with dark ink, Signature is matte black with grey ink. To use a real photo of the back, add cardes-back.png or cardsig-back.png next to this file. */
+.face.back { color: var(--back-ink); justify-content: space-between; }
+.face.back .label { color: var(--back-soft); }
+.face.back .back-top { color: inherit; }
+.face.back .buyer { color: var(--back-ink); border-bottom-color: var(--back-ink); }
+.face.back .buyer:focus-visible { border-bottom-color: var(--back-ink); }
+.back-brand { font-family: var(--display); font-weight: 800; font-size: 1.3rem; letter-spacing: 0.1em; }
+.back-mid { display: grid; gap: 10px; }
+.back-bottom { display: flex; justify-content: space-between; align-items: center; gap: 10px 16px; flex-wrap: wrap; }
+.back-url { text-transform: none; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; border: 1px solid currentColor; border-radius: 999px; padding: 5px 14px; max-width: 100%; overflow-wrap: anywhere; }
+.back-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.26em; color: var(--back-soft); }
+.essential .face.back { --back-ink: #2a2008; --back-soft: rgba(42, 32, 8, 0.66); background: url('cardes-back.png') center / cover no-repeat, radial-gradient(120% 80% at 15% 0%, rgba(255, 255, 255, 0.28), transparent 60%), linear-gradient(135deg, #e0c27a 0%, #b8923e 55%, #94762c 100%); }
+.signature .face.back { --back-ink: #d4d6d8; --back-soft: #8f9498; background: url('cardsig-back.png') center / cover no-repeat, radial-gradient(120% 80% at 85% 0%, rgba(255, 255, 255, 0.07), transparent 60%), linear-gradient(135deg, #1e1f21 0%, #101112 100%); }
+
+/* The sentences leave the card and slide out beside it */
+.side { display: none; }
+.opt.open .side { display: grid; gap: 18px; animation: slideout 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s both; }
+.side ul li { font-size: 17px; padding-block: 14px; border-top: 1px solid var(--gold); }
+.opt.open .side li { animation: rise 0.6s ease both; }
+.opt.open .side li:nth-child(1) { animation-delay: 0.5s; }
+.opt.open .side li:nth-child(2) { animation-delay: 0.65s; }
+.opt.open .side li:nth-child(3) { animation-delay: 0.8s; }
+.opt.open .side li:nth-child(4) { animation-delay: 0.95s; }
+@keyframes floaty { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+@keyframes slideout { from { opacity: 0; transform: translateX(-48px); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.series h3 { font-size: 2rem; }
+.series .price { font-size: 2.4rem; font-weight: 900; color: var(--fg-strong); letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.series li { padding-top: 10px; border-top: 1px solid var(--line); font-size: 14.5px; letter-spacing: 0.08em; }
+.series ul { display: grid; gap: 10px; }
+.nfc-note { margin-top: 28px; max-width: 62ch; font-size: 15.5px; letter-spacing: 0.08em; }
+
+.about { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 12px 40px; }
+.about .copy { min-width: 0; display: grid; gap: 16px; }
+.about .copy p { max-width: 60ch; font-size: 15.5px; letter-spacing: 0.08em; }
+.facts { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; }
+.facts div { padding-block: 16px; border-top: 1px solid var(--line); min-width: 0; }
+.facts dt { font-size: 12px; font-weight: 600; letter-spacing: 0.22em; color: var(--muted); margin-bottom: 6px; }
+.facts dd { font-size: 15px; }
+
+/* About us page */
+.ab-hero { display: grid; gap: 24px; }
+.ab-hero h1 { font-size: clamp(2.6rem, 9vw, 7rem); font-weight: 900; letter-spacing: -0.035em; line-height: 0.92; max-width: 14ch; }
+.ab-hero p { max-width: 52ch; }
+.since { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--gold); letter-spacing: 0.08em; }
+.story { display: grid; gap: 16px; min-width: 0; }
+.story p { max-width: 62ch; font-size: 15.5px; letter-spacing: 0.08em; }
+.owner { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; align-items: start; }
+.owner-photo { aspect-ratio: 4 / 5; max-width: 100%; border: 1px solid var(--gold); border-radius: 20px; box-shadow: 0 0 24px rgba(184, 146, 62, 0.12); background: url('owner.png') center / cover no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%234a4d50' stroke-width='2.4' stroke-linecap='square'%3E%3Cpath d='M3 12 L20 4 L37 12'/%3E%3Cpath d='M7 21 L20 14 L33 21'/%3E%3Cpath d='M12 30 L20 25 L28 30'/%3E%3Cpath d='M20 25 L20 37'/%3E%3C/svg%3E") center / 72px no-repeat, var(--surface); }
+.owner-text { display: grid; gap: 14px; min-width: 0; }
+.owner-text h3 { font-size: clamp(1.9rem, 4.4vw, 3rem); font-weight: 900; letter-spacing: -0.02em; }
+.owner-text p { max-width: 56ch; font-size: 15.5px; letter-spacing: 0.08em; }
+.more { justify-self: start; margin-top: 8px; }
+.close h2 { font-size: clamp(2.2rem, 7vw, 5rem); font-weight: 900; letter-spacing: -0.03em; max-width: 13ch; }
+.close .btn { margin-top: 32px; }
+footer { border-top: 1px solid var(--line); padding-block: 26px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+/* Card photos behind the series boxes. Put cardes.png and cardsig.png in the same folder as this file. A dark layer keeps the text readable, and the box falls back to plain dark grey if a photo is missing. */
+.essential .face { background: linear-gradient(rgba(11, 11, 12, 0.72), rgba(11, 11, 12, 0.9)), url('cardes.png') center / cover no-repeat var(--surface); }
+.signature .face { background: linear-gradient(rgba(11, 11, 12, 0.72), rgba(11, 11, 12, 0.9)), url('cardsig.png') center / cover no-repeat var(--surface); }
+
+/* Descriptions use Playfair Display; headings, labels and buttons stay Bodoni Moda */
+.hero p, .ab-hero p, .story p, .owner-text p, .about .copy p, .rows p, .rows .spec, .series li, .facts dd, .nfc-note, .trio span, #splash .sub {
+  font-family: var(--text);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .head, .about { grid-template-columns: 1fr; gap: 10px; margin-bottom: 32px; }
+  .about { margin-bottom: 0; }
+  .head .label { padding-top: 0; }
+  .rows li { grid-template-columns: 1fr; gap: 10px; }
+  .rows .status { justify-self: start; order: -1; }
+  .series, .facts { grid-template-columns: 1fr; }
+  .opt.open { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .owner { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .owner-photo { max-width: 280px; }
+  .trio { grid-template-columns: 1fr; }
+  .trio div, .trio div + div { padding: 14px 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .trio div:last-child { border-bottom: 0; }
+  .nav ul { gap: 2px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .screen { animation: none; }
+  .loadbar i { animation-duration: 0.01s; }
+  .flip-inner { transition: none; }
+  .opt.open .flip, .opt.open .side, .opt.open .side li { animation: none; }
+
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("falcon-logo.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(75vw, 750px);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+ /* animation: falconFloat 8s ease-in-out infinite; */
+}
+
+/* Keep all website content above the logo */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Floating and fading animation */
+/*@keyframes falconFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.035;
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.025);
+    opacity: 0.09;
+  }
+}
+
+/* Respect reduced-motion settings */
+/* @media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
+}
+</style>
+</head>
+<body>
+<!-- ============ SPLASH ============ -->
+<main id="splash" class="screen" tabindex="0" aria-label="Falcon Supreme. Tap anywhere to continue.">
+  <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true">
+    <path d="M3 12 L20 4 L37 12"/><path d="M7 21 L20 14 L33 21"/><path d="M12 30 L20 25 L28 30"/><path d="M20 25 L20 37"/>
+  </svg>
+  <h1>Falcon Supreme</h1>
+  <p class="sub">Web and Technology Developers</p>
+  <div class="loadbar" aria-hidden="true"><i></i></div>
+  <div class="skip label"><a href="#landing" data-screen="landing">Tap to enter</a></div>
+</main>
+
+<!-- ============ LANDING ============ -->
+<main id="landing" class="screen" hidden>
+  <div class="wrap" style="width:100%;flex:1;display:flex;flex-direction:column">
+    <header class="bar">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 12 L20 4 L37 12"/><path d="M7 21 L20 14 L33 21"/><path d="M12 30 L20 25 L28 30"/><path d="M20 25 L20 37"/>
+        </svg>
+        Falcon Supreme
+      </div>
+      <span class="label">Philippines</span>
+    </header>
+
+    <div class="hero">
+      <span class="label">Web and technology developers</span>
+      <h1>We build websites and the hardware behind them.</h1>
+      <p>Custom websites, NFC business cards that open a full personal page, and connected devices built from the circuit board up.</p>
+      <div class="actions">
+        <a class="btn" href="#home" data-screen="home">Enter site</a>
+        <a class="btn ghost" data-inquire href="#home">Inquire</a>
+      </div>
+    </div>
+
+    <div class="trio">
+      <div><b>Websites</b><span>Built to order</span></div>
+      <div><b>YourNFC</b><span>Tap cards</span></div>
+      <div><b>Hardware</b><span>Made in house</span></div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ HOME ============ -->
+<div id="home" class="screen" hidden>
+  <header class="nav">
+    <div class="wrap">
+      <button class="brand" type="button" data-hash="landing" aria-label="Back to landing page">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true">
+          <path d="M3 12 L20 4 L37 12"/><path d="M7 21 L20 14 L33 21"/><path d="M12 30 L20 25 L28 30"/><path d="M20 25 L20 37"/>
+        </svg>
+        Falcon Supreme
+      </button>
+      <ul>
+        <li><button class="link" type="button" data-go="services">Services</button></li>
+        <li><button class="link" type="button" data-go="yournfc">YourNFC</button></li>
+        <li><button class="link" type="button" data-go="hardware">Hardware</button></li>
+        <li><button class="link" type="button" data-hash="about">About us</button></li>
+        <li><a class="btn" data-inquire href="#home">Inquire</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="services">
+      <div class="head">
+        <span class="label">Services</span>
+        <h2>What we make for you.</h2>
+      </div>
+      <ul class="rows">
+        <li>
+          <h3>Websites</h3>
+          <div>
+            <p>Custom websites for businesses and individuals, designed and coded by one developer from the first sketch to the live domain. You talk to the person who writes the code.</p>
+            <span class="spec">Business sites · Online profiles · Dashboards and logins</span>
+          </div>
+          <span class="status live">Taking projects</span>
+        </li>
+        <li>
+          <h3>YourNFC cards</h3>
+          <div>
+            <p>An NFC card that opens your own personal web page when someone taps it. It is a full digital business card with your photo, details and links, and your name is printed on the card.</p>
+            <span class="spec">Essential · Signature</span>
+          </div>
+          <span class="status live">Live</span>
+        </li>
+        <li>
+          <h3>Connected hardware</h3>
+          <div>
+            <p>Sensors, scooter electronics and drones, designed and built in house. Every device is tested on the bench before it reaches a customer.</p>
+            <span class="spec">IoT · Embedded · UAV</span>
+          </div>
+          <span class="status">In development</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="yournfc">
+      <div class="head">
+        <span class="label">YourNFC</span>
+        <h2>Two series. One tap.</h2>
+      </div>
+      <div class="series" id="series">
+        <div class="opt essential">
+          <div class="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Essential card. Tap to flip it and see the buyer name.">
+            <div class="flip-inner">
+              <div class="face front">
+                <span class="label">Personal card</span>
+                <h3>Essential</h3>
+                <div class="price">₱499</div>
+                <ul>
+              <li>Personal page with your photo, details and links</li>
+              <li>Your name printed on the card</li>
+              <li>Edit your page any time from your login</li>
+                </ul>
+                <span class="label hint">Tap to flip and see the buyer name</span>
+              </div>
+              <div class="face back">
+                <div class="back-top"><span class="back-brand">YourNFC</span><svg class="tap" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 10 a8 8 0 0 1 0 10"/><path d="M13 6 a14 14 0 0 1 0 18"/><path d="M18 2 a20 20 0 0 1 0 26"/></svg></div>
+                <div class="back-mid">
+                  <span class="label">Buyer name</span>
+                  <input class="buyer" id="buyer-essential" type="text" value="Juan Dela Cruz" maxlength="24" autocomplete="off" aria-label="Type a name to preview it on the Essential card">
+                  <span class="label">Sample name. Type yours.</span>
+                </div>
+                <div class="back-bottom">
+                  <span class="back-url">/u/yourname</span>
+                  <span class="back-tag">Tap &middot; Connect &middot; Beyond</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="side">
+            <span class="label">Included in Essential</span>
+            <ul>
+            <li>Personal page with your photo, details and links</li>
+            <li>Your name printed on the card</li>
+            <li>Edit your page any time from your login</li>
+            </ul>
+            <span class="label">Tap the card to flip it back</span>
+          </div>
+        </div>
+        <div class="opt signature">
+          <div class="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Signature card. Tap to flip it and see the buyer name.">
+            <div class="flip-inner">
+              <div class="face front">
+                <span class="label">Business edition</span>
+                <h3>Signature</h3>
+                <div class="price">₱699</div>
+                <ul>
+              <li>Everything in Essential</li>
+              <li>Company name and the year you started the business</li>
+              <li>Profile visit count shown on your page</li>
+              <li>Matte black and grey profile made for business owners</li>
+                </ul>
+                <span class="label hint">Tap to flip and see the buyer name</span>
+              </div>
+              <div class="face back">
+                <div class="back-top"><span class="back-brand">YourNFC</span><svg class="tap" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 10 a8 8 0 0 1 0 10"/><path d="M13 6 a14 14 0 0 1 0 18"/><path d="M18 2 a20 20 0 0 1 0 26"/></svg></div>
+                <div class="back-mid">
+                  <span class="label">Buyer name</span>
+                  <input class="buyer" id="buyer-signature" type="text" value="Juan Dela Cruz" maxlength="24" autocomplete="off" aria-label="Type a name to preview it on the Signature card">
+                  <span class="label">Sample name. Type yours.</span>
+                </div>
+                <div class="back-bottom">
+                  <span class="back-url">/u/yourname</span>
+                  <span class="back-tag">Tap &middot; Connect &middot; Beyond</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="side">
+            <span class="label">Included in Signature</span>
+            <ul>
+            <li>Everything in Essential</li>
+            <li>Company name and the year you started the business</li>
+            <li>Profile visit count shown on your page</li>
+            <li>Matte black and grey profile made for business owners</li>
+            </ul>
+            <span class="label">Tap the card to flip it back</span>
+          </div>
+        </div>
+      </div>
+      <p class="nfc-note">Every card points to your own address in the form /u/yourname, so you can change your details without replacing the card.</p>
+    </section>
+
+    <section id="hardware">
+      <div class="head">
+        <span class="label">On the bench</span>
+        <h2>Hardware we are building.</h2>
+      </div>
+      <ul class="rows">
+       
+        <li>
+          <h3>Cubot</h3>
+          <div>
+            <p>A small desk companion robot with a face that shows mood. Its mood follows the room temperature, and it works as an alarm you set yourself. A working prototype exists and a first batch of 30 units is planned.</p>
+            <span class="spec">Prototype built · First batch: 30 units</span>
+          </div>
+          <span class="status">Prototype</span>
+        </li>
+
+        <li>
+          <h3>Flood-watch UAV</h3>
+          <div>
+            <p>A small fixed-wing pusher-propeller drone styled after the MQ-9 Reaper, designed to watch rising water for local government units. Thermal and infrared sensing comes after reliable flight.</p>
+            <span class="spec">Fixed wing · Pusher prop · Flood monitoring</span>
+          </div>
+          <span class="status">In build</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="aboutus">
+      <div class="about">
+        <span class="label" style="padding-top:10px">About us</span>
+        <div class="copy">
+          <h2 style="font-size:clamp(2rem,6vw,4rem);font-weight:900;letter-spacing:-0.03em;margin-bottom:12px">A small team that builds the whole thing.</h2>
+          <p>Falcon Supreme Web and Technology Developers is a development company in the Philippines. We make websites for clients, sell NFC cards that open a personal web page, and build connected devices from the circuit board up.</p>
+          <p>The same people design the page you see and the hardware behind it, so a website, a card and a sensor work as one product instead of three separate jobs.</p>
+          <dl class="facts">
+            <div><dt>Based in</dt><dd>Philippines</dd></div>
+            <div><dt>Team</dt><dd>The founder, who designs and codes each project, and one employee</dd></div>
+            <div><dt>We build</dt><dd>Websites, NFC cards, IoT devices and drones</dd></div>
+            <div><dt>We work with</dt><dd>Businesses, individuals and soon local government units</dd></div>
+          </dl>
+          <a class="btn ghost more" href="#about" data-screen="about">More about us</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="close" id="inquire">
+      <span class="label">Work with us</span>
+      <h2 style="margin-top:20px">Tell us what you need built.</h2>
+      <a class="btn" data-inquire href="#home">Inquire</a>
+    </section>
+
+    <footer>
+      <span class="label">&copy; 2026 Falcon Supreme Web and Technology Developers</span>
+      <span class="label">Philippines</span>
+    </footer>
+  </main>
+</div>
+
+<!-- ============ ABOUT US ============ -->
+<div id="about" class="screen" hidden>
+  <header class="nav">
+    <div class="wrap">
+      <button class="brand" type="button" data-hash="home" aria-label="Back to home">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M3 12 L20 4 L37 12"/><path d="M7 21 L20 14 L33 21"/><path d="M12 30 L20 25 L28 30"/><path d="M20 25 L20 37"/></svg>
+        Falcon Supreme
+      </button>
+      <ul>
+        <li><button class="link" type="button" data-hash="home">Home</button></li>
+        <li><button class="link" type="button" data-hash="about" aria-current="page">About us</button></li>
+        <li><a class="btn" data-inquire href="#about">Inquire</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="ab-hero">
+      <span class="label">About us</span>
+      <h1>Falcon Supreme</h1>
+      <p>Web and technology developers in the Philippines.</p>
+      <span class="since"> OCTOBER <span data-year> 2026 </span></span>
+    </section>
+
+    <section>
+      <div class="head">
+        <span class="label">The company</span>
+        <h2>Who we are.</h2>
+      </div>
+      <div class="about">
+        <span></span>
+        <div class="story">
+          <p>Founded in <span data-year>2025</span> by <span data-owner>Fred Zhylez Falco</span>, Falcon Supreme Web and Technology Developers builds websites for clients, sells YourNFC cards that open a personal web page, and develops connected devices from the circuit board up.</p>
+          <p>The same people design the page you see and the hardware behind it, so a website, a card and a sensor work as one product instead of three separate jobs.</p>
+          <dl class="facts">
+            <div><dt>Company</dt><dd>Falcon Supreme Web and Technology Developers</dd></div>
+            <div><dt>Owner</dt><dd data-owner>Fred Zhylez Falco</dd></div>
+            <div><dt>Year started</dt><dd data-year>2025</dd></div>
+            <div><dt>Based in</dt><dd>Philippines</dd></div>
+            <div><dt>Sole</dt><dd>Fred</dd></div>
+            <div><dt>What we make</dt><dd>Websites, YourNFC cards, IoT devices and drones</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="head">
+        <span class="label">The owner</span>
+        <h2>The person behind it.</h2>
+      </div>
+      <!-- OWNER PHOTO: save your photo as owner.png next to this file -->
+      <div class="owner">
+        <img class="owner-photo" src="owner.jpg" alt="Owner photo">
+        <div class="owner-text">
+          <span class="label">Founder and developer</span>
+          <h3 data-owner>Fred Zhylez Falco</h3>
+          <p>Designs and codes every website, builds the hardware on the bench, and talks to every client directly from the first message to the day the work goes live.</p>
+          <p>Started Falcon Supreme in <span data-year>2025</span>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="close">
+      <span class="label">Work with us</span>
+      <h2 style="margin-top:20px">Tell us what you need built.</h2>
+      <a class="btn" data-inquire href="#about">Inquire</a>
+    </section>
+
+    <footer>
+      <span class="label">&copy; 2026 Falcon Supreme Web and Technology Developers</span>
+      <span class="label">Philippines</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* INQUIRE LINK: replace the address below with your real email, or use your Messenger link, e.g. 'https://m.me/yourpage' */
+var OWNER_NAME = 'Fred Zhylez Falco';   /* your full name, shown on the About us page */
+var YEAR_STARTED = '2026';  /* the year Falcon Supreme started, for example '2024' */
+var INQUIRE_LINK = 'mailto:zhylezfalco@gmail.com';
+
+(function () {
+  var screens = ['splash', 'landing', 'home', 'about'];
+  var timer = null;
+
+  document.querySelectorAll('[data-owner]').forEach(function (el) { el.textContent = OWNER_NAME; });
+  document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = YEAR_STARTED; });
+  document.querySelectorAll('[data-inquire]').forEach(function (a) { a.setAttribute('href', INQUIRE_LINK); });
+
+  var current = null;
+
+  /* Shows one screen. Works even if the browser refuses to change the address bar. */
+  function render(h) {
+    if (screens.indexOf(h) === -1) h = 'splash';
+    if (h === current) return;
+    current = h;
+    screens.forEach(function (s) { document.getElementById(s).hidden = s !== h; });
+    var el = document.getElementById(h);
+    el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+    window.scrollTo(0, 0);
+    if (h === 'home') equalize();
+    clearTimeout(timer);
+    if (h === 'splash') timer = setTimeout(function () { go('landing'); }, 3400);
+  }
+
+  function go(h) {
+    render(h);
+    try { if (location.hash !== '#' + h) location.hash = h; } catch (e) {}
+  }
+
+  document.getElementById('splash').addEventListener('click', function () { go('landing'); });
+  document.getElementById('splash').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go('landing'); } });
+  document.querySelectorAll('[data-hash]').forEach(function (b) { b.addEventListener('click', function () { go(b.getAttribute('data-hash')); }); });
+  document.querySelectorAll('[data-screen]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); go(a.getAttribute('data-screen')); }); });
+  document.querySelectorAll('[data-go]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = document.getElementById(b.getAttribute('data-go'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  /* Pricing cards: tap to float and flip. The sentences slide out beside the card. */
+  var series = document.getElementById('series');
+  var opts = document.querySelectorAll('.opt');
+  function equalize() {
+    series.style.removeProperty('--card-h');
+    var h = 0;
+    document.querySelectorAll('.flip-inner').forEach(function (f) { h = Math.max(h, f.offsetHeight); });
+    if (h) series.style.setProperty('--card-h', h + 'px');
+  }
+  function toggleOpt(opt) {
+    var willOpen = !opt.classList.contains('open');
+    opts.forEach(function (o) { o.classList.remove('open'); o.querySelector('.flip').setAttribute('aria-pressed', 'false'); });
+    if (willOpen) { opt.classList.add('open'); opt.querySelector('.flip').setAttribute('aria-pressed', 'true'); }
+    series.classList.toggle('has-open', willOpen);
+    equalize();
+    if (willOpen) { try { opt.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
+  }
+  opts.forEach(function (opt) {
+    var card = opt.querySelector('.flip');
+    var input = opt.querySelector('.buyer');
+    var url = opt.querySelector('.back-url');
+    function syncUrl() {
+      var slug = input.value.toLowerCase().replace(/[^a-z0-9]+/g, '');
+      url.textContent = '/u/' + (slug || 'yourname');
+    }
+    input.addEventListener('input', syncUrl);
+    syncUrl();
+    card.addEventListener('click', function (e) { if (e.target.closest('input')) return; toggleOpt(opt); });
+    card.addEventListener('keydown', function (e) {
+      if (e.target.closest('input')) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleOpt(opt); }
+    });
+  });
+
+  window.addEventListener('resize', equalize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(equalize);
+  window.addEventListener('hashchange', function () { render((location.hash || '').replace('#', '')); });
+  render((location.hash || '').replace('#', ''));
+})();
+</script>
+</body>
+</html>
